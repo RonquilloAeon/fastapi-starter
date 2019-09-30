@@ -3,6 +3,7 @@ services:
   api:
     build:
       context: .
+      target: release
     command: "--reload"
     container_name: fastapi
     networks:
