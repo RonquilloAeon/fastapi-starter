@@ -1,0 +1,13 @@
+version: "3.4"
+services:
+  api:
+    build:
+      context: .
+    command: "--reload"
+    container_name: fastapi
+    networks:
+      - "default"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/app
