@@ -104,4 +104,5 @@ venv.bak/
 .mypy_cache/
 
 # Project-specific stuff
+.db/
 .idea/

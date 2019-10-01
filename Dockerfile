@@ -1,6 +1,6 @@
 # Multi-stage build to reduce image size
 # See https://pythonspeed.com/articles/multi-stage-docker-python/
-FROM pypy:3.6-7.1-slim as build
+FROM python:3.7.0-slim as build
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -11,7 +11,8 @@ COPY requirements.txt ./
 
 RUN pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.txt
 
-FROM pypy:3.6-7.1-slim as release
+FROM python:3.7.0-slim as release
+ENV PYTHONUNBUFFERED 1
 
 COPY --from=build /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
