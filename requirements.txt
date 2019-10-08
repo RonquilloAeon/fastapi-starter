@@ -6,6 +6,7 @@ fastapi==0.38.1
 gunicorn==19.9.0
 h11==0.8.1
 httptools==0.0.13
+https://github.com/RonquilloAeon/migri/archive/master.zip
 pydantic==0.32.2
 PyPika==0.35.8
 starlette==0.12.8
