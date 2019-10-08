@@ -4,7 +4,7 @@ __all__ = ['config']
 
 
 class Config:
-    DB_MODEL_MODULES = ['models']
+    DB_MODEL_MODULES = ['models.messages']
     DB_HOST = os.getenv('DB_HOST', 'localhost')
     DB_NAME = os.getenv('DB_NAME')
     DB_PORT = os.getenv('DB_PORT', '5432')
