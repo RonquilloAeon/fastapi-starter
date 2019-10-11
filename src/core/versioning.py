@@ -12,7 +12,10 @@ class VersionedRoute(APIRoute):
 
     def get_version(self, scope):
         version_header = list(
-            filter(lambda h: h[0] == bytes(self.VERSION_HEADER_NAME, 'utf-8'), scope.get('headers', []))
+            filter(
+                lambda h: h[0] == bytes(scope['app'].extra['api_versioning']['header_name'], 'utf-8'),
+                scope.get('headers', [])
+            )
         )
 
         if len(version_header) > 0:
@@ -28,8 +31,7 @@ class VersionedRoute(APIRoute):
                 return target_version
 
         # Resort to latest
-        # TODO find way to retrieve latest version
-        return datetime.now().strftime('%Y-%m-%d')
+        return scope['app'].version
 
     def matches(self, scope):
         version = self.get_version(scope)
@@ -47,7 +49,7 @@ class VersionedRoute(APIRoute):
 
         async def versioned_route_handler(request: Request) -> Response:
             oh = await original_handler(request)
-            oh.headers[self.VERSION_HEADER_NAME] = request.scope['api_version']
+            oh.headers[request.scope['app'].extra['api_versioning']['header_name']] = request.scope['api_version']
 
             return oh
 

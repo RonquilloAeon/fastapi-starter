@@ -7,7 +7,7 @@ from views import messages as message_views
 
 
 def create_app(config):
-    app = FastAPI()
+    app = FastAPI(version=config.API_DEFAULT_VERSION, api_versioning={'header_name': config.API_VERSION_HEADER_NAME})
     app.add_middleware(DBMiddleware)
     app.include_router(message_views.router, prefix='/messages')
 
