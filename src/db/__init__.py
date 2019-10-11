@@ -20,6 +20,7 @@ async def init(config):
         'apps': {
             'models': {
                 'models': config.DB_MODEL_MODULES,
+                'default_connection': 'default',
             },
         },
     }

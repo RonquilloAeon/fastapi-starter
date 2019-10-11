@@ -2,13 +2,14 @@ from fastapi import FastAPI
 
 import db
 from config import config
-
-from views import messages_router
+from core.middleware import DBMiddleware
+from views import messages as message_views
 
 
 def create_app(config):
     app = FastAPI()
-    app.include_router(messages_router, prefix='/messages')
+    app.add_middleware(DBMiddleware)
+    app.include_router(message_views.router, prefix='/messages')
 
     @app.on_event('startup')
     async def startup():
