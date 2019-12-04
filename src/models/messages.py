@@ -1,15 +1,19 @@
+import orm
 from pydantic import BaseModel
-from tortoise import fields
-from tortoise.models import Model
+
+from db import get_db
+
+db = get_db()
 
 
-class Message(Model):
-    id = fields.IntField(pk=True)
-    subject = fields.TextField(null=False)
-    message = fields.TextField(null=False)
+class Message(orm.Model):
+    __tablename__ = "message"
+    __database__ = db.database
+    __metadata__ = db.metadata
 
-    class Meta:
-        table = 'message'
+    id = orm.Integer(primary_key=True)
+    subject = orm.Text(allow_null=False)
+    message = orm.Text(allow_null=False)
 
 
 class MessageSchema(BaseModel):

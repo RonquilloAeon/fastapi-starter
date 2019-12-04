@@ -1,25 +1,24 @@
 from fastapi import FastAPI
 
-import db
-from config import config
-from core.middleware import DBMiddleware
+from db import get_db
+from config import Config
 from views import messages as message_views
 
 
 def create_app(config):
-    app = FastAPI(version=config.API_DEFAULT_VERSION, api_versioning={'header_name': config.API_VERSION_HEADER_NAME})
-    app.add_middleware(DBMiddleware)
+    app = FastAPI(version=config.api_default_version, api_versioning={'header_name': config.api_version_header})
     app.include_router(message_views.router, prefix='/messages')
+    db = get_db()
 
-    @app.on_event('startup')
+    @app.on_event("startup")
     async def startup():
-        await db.init(config)
+        await db.database.connect()
 
-    @app.on_event('shutdown')
+    @app.on_event("shutdown")
     async def shutdown():
-        await db.Tortoise.close_connections()
+        await db.database.disconnect()
 
     return app
 
 
-app = create_app(config)
+app = create_app(Config())

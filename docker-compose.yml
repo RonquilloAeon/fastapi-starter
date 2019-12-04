@@ -8,10 +8,7 @@ services:
     command: "--reload"
     container_name: fastapi
     environment:
-      - DB_HOST=db
-      - DB_NAME=apidb
-      - DB_PASS=passpass
-      - DB_USER=turbo
+      - DATABASE_URL=postgresql://turbo:passpass@db:5432/apidb
     networks:
       - default
     ports:
