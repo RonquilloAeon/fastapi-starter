@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 
-from db import get_db
-from config import Config
-from views import messages as message_views
+from api.db import get_db
+from api.message import views as message_views
 
 
 def create_app(config):
@@ -19,6 +18,3 @@ def create_app(config):
         await db.database.disconnect()
 
     return app
-
-
-app = create_app(Config())

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from typing import List
 
-from versioning import version, VersionedRoute
-from models import messages as message_models
+from api.versioning import version, VersionedRoute
+from api.message import models as message_models
 
 router = APIRouter(route_class=VersionedRoute)
 

@@ -3,7 +3,7 @@ services:
   api:
     build:
       context: .
-      target: release
+      target: develop
     entrypoint: "/app/start.dev.sh"
     command: "--reload"
     container_name: fastapi
@@ -15,7 +15,7 @@ services:
       - 8000:8000
     restart: on-failure
     volumes:
-      - ./src:/app
+      - ./api:/app/api
 
   db:
     container_name: fastapi_db

@@ -1,7 +1,7 @@
 import orm
 from pydantic import BaseModel
 
-from db import get_db
+from api.db import get_db
 
 db = get_db()
 

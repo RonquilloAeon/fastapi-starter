@@ -2,7 +2,7 @@ import databases
 import sqlalchemy
 from typing import Optional
 
-from config import Config
+from api.config import Config
 
 
 db = None
