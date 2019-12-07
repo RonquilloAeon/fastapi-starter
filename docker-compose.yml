@@ -3,22 +3,19 @@ services:
   api:
     build:
       context: .
-      target: release
+      target: develop
     entrypoint: "/app/start.dev.sh"
     command: "--reload"
     container_name: fastapi
     environment:
-      - DB_HOST=db
-      - DB_NAME=apidb
-      - DB_PASS=passpass
-      - DB_USER=turbo
+      - DATABASE_URL=postgresql://turbo:passpass@db:5432/apidb
     networks:
       - default
     ports:
       - 8000:8000
     restart: on-failure
     volumes:
-      - ./src:/app
+      - ./api:/app/api
 
   db:
     container_name: fastapi_db

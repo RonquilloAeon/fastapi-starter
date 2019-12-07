@@ -1,4 +1,3 @@
-from datetime import datetime
 from fastapi.routing import APIRoute
 from re import fullmatch
 from starlette.requests import Request
@@ -8,21 +7,19 @@ from starlette.routing import Match
 
 
 class VersionedRoute(APIRoute):
-    VERSION_HEADER_NAME = 'fsg-plaid-version'
-
     def get_version(self, scope):
+        header_name = scope["app"].extra["api_versioning"]["header_name"]
         version_header = list(
             filter(
-                lambda h: h[0] == bytes(scope['app'].extra['api_versioning']['header_name'], 'utf-8'),
-                scope.get('headers', [])
+                lambda h: h[0] == bytes(header_name, "utf-8"), scope.get("headers", []),
             )
         )
 
         if len(version_header) > 0:
             requested_version = version_header[0][1]
             version_check = fullmatch(
-                r'^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$',
-                requested_version.decode('utf-8')
+                r"^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$",
+                requested_version.decode("utf-8"),
             )
 
             if version_check:
@@ -31,15 +28,15 @@ class VersionedRoute(APIRoute):
                 return target_version
 
         # Resort to latest
-        return scope['app'].version
+        return scope["app"].version
 
     def matches(self, scope):
         version = self.get_version(scope)
         match, child_scope = super().matches(scope)
 
         if match != Match.NONE:
-            if self.endpoint.__api_version__ <= int(version.replace('-', '')):
-                child_scope.update({'api_version': version})
+            if self.endpoint.__api_version__ <= int(version.replace("-", "")):
+                child_scope.update({"api_version": version})
                 return match, child_scope
 
         return Match.NONE, {}
@@ -49,7 +46,9 @@ class VersionedRoute(APIRoute):
 
         async def versioned_route_handler(request: Request) -> Response:
             oh = await original_handler(request)
-            oh.headers[request.scope['app'].extra['api_versioning']['header_name']] = request.scope['api_version']
+            oh.headers[
+                request.scope["app"].extra["api_versioning"]["header_name"]
+            ] = request.scope["api_version"]
 
             return oh
 
@@ -58,8 +57,9 @@ class VersionedRoute(APIRoute):
 
 def version(year: str, month: str, day: str):
     """Add version to a path operation function"""
+
     def decorator(func):
-        func.__api_version__ = int(f'{year}{month}{day}')
+        func.__api_version__ = int(f"{year}{month}{day}")
         return func
 
     return decorator

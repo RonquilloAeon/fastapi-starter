@@ -1,24 +1,26 @@
 # Multi-stage build to reduce image size
 # See https://pythonspeed.com/articles/multi-stage-docker-python/
-FROM python:3.7.0-slim as build
+FROM python:3.8.0-slim as py
+
+# Base
+FROM py as base
+ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     build-essential python-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
-
-RUN pip3 install --no-cache-dir --no-warn-script-location --user -r requirements.txt
-
-FROM python:3.7.0-slim as release
-ENV PYTHONUNBUFFERED 1
-
-COPY --from=build /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
-
 WORKDIR /app
-COPY src ./
+COPY api ./api/
+COPY setup.py ./
+
+# Dev
+FROM base as develop
+COPY --from=base / /
+COPY start.dev.sh ./
+
+RUN pip3 install --no-cache-dir -e . https://github.com/RonquilloAeon/migri/archive/master.zip
 
 EXPOSE 8000
 
@@ -26,4 +28,7 @@ EXPOSE 8000
 # TODO figure out how to get gunicorn to work when user is set (since gunicorn is installed in /root/.local)
 #USER 9000
 
-ENTRYPOINT ["/app/start.sh"]
+ENTRYPOINT ["/app/start.dev.sh"]
+
+# Production
+# TODO
