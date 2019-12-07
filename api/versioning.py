@@ -1,9 +1,12 @@
+import logging
 from fastapi.routing import APIRoute
 from re import fullmatch
 from starlette.requests import Request
 from starlette.responses import Response
 
 from starlette.routing import Match
+
+logger = logging.getLogger(__name__)
 
 
 class VersionedRoute(APIRoute):
@@ -24,7 +27,7 @@ class VersionedRoute(APIRoute):
 
             if version_check:
                 target_version = version_check.string
-                # TODO debug log
+                logging.debug("API version '%s' requested", target_version)
                 return target_version
 
         # Resort to latest
