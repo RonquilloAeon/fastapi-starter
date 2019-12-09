@@ -4,9 +4,12 @@ from pydantic import BaseSettings, PostgresDsn
 
 class Config(BaseSettings):
     # API config
-    api_version_header: str = "api-version"
-    api_default_version: str = datetime.now().strftime("%Y-%m-%d")
-    testing: bool = False
+    API_VERSION_HEADER: str = "api-version"
+    API_DEFAULT_VERSION: str = datetime.now().strftime("%Y-%m-%d")
+    TESTING: bool = False
 
     # Database
-    database_url: PostgresDsn
+    DATABASE_URL: PostgresDsn
+
+    class Config:
+        case_sensitive = True

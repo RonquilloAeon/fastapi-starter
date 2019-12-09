@@ -10,8 +10,8 @@ from api import app
 from api.config import Config
 
 config = Config()
-TEST_DATABASE_URL = config.database_url.replace(config.database_url.path, "")
-TEST_DB_NAME = config.database_url.path.replace("/", "")
+TEST_DATABASE_URL = config.DATABASE_URL.replace(config.DATABASE_URL.path, "")
+TEST_DB_NAME = config.DATABASE_URL.path.replace("/", "")
 
 
 @asynccontextmanager
@@ -30,7 +30,7 @@ async def run_db_statement(statement: str) -> None:
 
 
 async def set_up_db() -> None:
-    async with db_conn(config.database_url) as conn:
+    async with db_conn(config.DATABASE_URL) as conn:
         await run_initialization(conn, force_close_conn=False)
         await run_migrations("api/migrations", conn)
 

@@ -8,8 +8,8 @@ from api.message import views as message_views
 config = Config()
 
 app = FastAPI(
-    version=config.api_default_version,
-    api_versioning={"header_name": config.api_version_header},
+    version=config.API_DEFAULT_VERSION,
+    api_versioning={"header_name": config.API_VERSION_HEADER},
 )
 app.include_router(message_views.router, prefix="/messages")
 
