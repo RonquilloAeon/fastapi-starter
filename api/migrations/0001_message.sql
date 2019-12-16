@@ -21,15 +21,46 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql strict immutable;
 
-CREATE SEQUENCE message_sequence
+CREATE SEQUENCE category_sequence
     START WITH 1
     INCREMENT BY 1
     MINVALUE 1
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE message (
-    id integer PRIMARY KEY DEFAULT pseudo_encrypt('message_sequence'),
-    subject text NOT NULL,
-    message text NOT NULL
+CREATE TABLE category (
+    id integer PRIMARY KEY DEFAULT pseudo_encrypt('category_sequence'),
+    name text NOT NULL
+);
+
+CREATE SEQUENCE source_sequence
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE source (
+    id integer PRIMARY KEY DEFAULT pseudo_encrypt('source_sequence'),
+    author text NOT NULL,
+    work text NOT NULL
+);
+
+CREATE SEQUENCE quote_sequence
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE quote (
+    id integer PRIMARY KEY DEFAULT pseudo_encrypt('quote_sequence'),
+    source_id integer REFERENCES source(id),
+    text text NOT NULL
+);
+
+CREATE TABLE quote_category (
+    quote_id integer REFERENCES quote(id),
+    category_id integer REFERENCES category(id),
+    UNIQUE (quote_id, category_id)
 );
