@@ -9,6 +9,7 @@ services:
     container_name: fastapi
     environment:
       - DATABASE_URL=postgresql://turbo:passpass@db:5432/apidb
+      - PYTHONPATH=/etc/pkg
     networks:
       - default
     ports:
@@ -16,6 +17,7 @@ services:
     restart: on-failure
     volumes:
       - ./api:/app/api
+      - ./domain:/etc/pkg/domain
 
   db:
     container_name: fastapi_db
