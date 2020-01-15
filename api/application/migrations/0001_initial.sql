@@ -43,7 +43,8 @@ CREATE SEQUENCE source_sequence
 CREATE TABLE source (
     id integer PRIMARY KEY DEFAULT pseudo_encrypt('source_sequence'),
     author text NOT NULL,
-    work text NOT NULL
+    work text NOT NULL,
+    UNIQUE (author, work)
 );
 
 CREATE SEQUENCE quote_sequence

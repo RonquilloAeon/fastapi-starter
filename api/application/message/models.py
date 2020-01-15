@@ -1,7 +1,7 @@
 import orm
 from pydantic import BaseModel
 
-from api.db import database, metadata
+from api.adapters.orm import database, metadata
 
 
 class Message(orm.Model):

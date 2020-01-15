@@ -11,8 +11,6 @@ RUN apt-get update \
     build-essential python-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY domain /etc/pkg/domain/
-
 WORKDIR /app
 COPY api ./api/
 COPY setup.py ./

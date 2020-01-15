@@ -6,8 +6,8 @@ from migri import run_initialization, run_migrations
 from starlette.testclient import TestClient
 from typing import Generator
 
-from api import app
-from api.config import Config
+from application import app
+from config import Config
 
 config = Config()
 TEST_DATABASE_URL = config.DATABASE_URL.replace(config.DATABASE_URL.path, "")
