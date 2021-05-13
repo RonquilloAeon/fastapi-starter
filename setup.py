@@ -8,7 +8,7 @@ setup(
         "databases==0.2.6",
         "fastapi==0.44.0",
         "orm==0.1.5",
-        "pydantic==1.2",
+        "pydantic==1.6.2",
         "SQLAlchemy==1.3.11",
         "uvicorn==0.10.8",
     ],
